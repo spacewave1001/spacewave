@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>동탄 파티룸 예약 영수증</title>
+</head>
+<body>
+  <h1>동탄 파티룸 공간 웨이브 예약</h1>
+
+  <h2>✔ 예약 상품 : 동탄 파티룸 공간 웨이브</h2>
+  <label>이용일: <input type="date" id="useDate"></label>
+
+  <h2>[💌 결제 정보]</h2>
+
+  <!-- 기본 금액 선택 -->
+  <div>
+    <h3>기본 금액</h3>
+    <label><input type="radio" name="basePrice" value="100000"> 100,000원</label><br>
+    <label><input type="radio" name="basePrice" value="140000"> 140,000원</label><br>
+    <label><input type="radio" name="basePrice" value="150000"> 150,000원</label><br>
+    <label><input type="radio" name="basePrice" value="160000"> 160,000원</label><br>
+    <label><input type="radio" name="basePrice" value="170000"> 170,000원</label><br>
+    <label><input type="radio" name="basePrice" value="180000"> 180,000원</label><br>
+    <label><input type="radio" name="basePrice" value="190000"> 190,000원</label><br>
+  </div>
+
+  <!-- 인원 연장 선택 -->
+  <div>
+    <h3>인원 연장</h3>
+    <label><input type="radio" name="extraPerson" value="0"> 없음</label><br>
+    <label><input type="radio" name="extraPerson" value="10000"> 10,000원</label><br>
+    <label><input type="radio" name="extraPerson" value="20000"> 20,000원</label><br>
+    <label><input type="radio" name="extraPerson" value="30000"> 30,000원</label><br>
+    <label><input type="radio" name="extraPerson" value="40000"> 40,000원</label><br>
+  </div>
+
+  <!-- 야간 연장 선택 -->
+  <div>
+    <h3>야간 연장</h3>
+    <label><input type="radio" name="nightExtension" value="0"> 없음</label><br>
+    <label><input type="radio" name="nightExtension" value="50000"> 50,000원</label><br>
+    <label><input type="radio" name="nightExtension" value="70000"> 70,000원</label><br>
+  </div>
+
+  <!-- 리뷰 약속 할인 선택 -->
+  <div>
+    <h3>리뷰 약속 할인</h3>
+    <label><input type="radio" name="reviewDiscount" value="0"> 없음</label><br>
+    <label><input type="radio" name="reviewDiscount" value="-10000"> 10,000원</label><br>
+  </div>
+
+  <!-- 지인 할인 선택 -->
+  <div>
+    <h3>지인 할인</h3>
+    <label><input type="radio" name="friendDiscount" value="0"> 없음</label><br>
+    <label><input type="radio" name="friendDiscount" value="-10000"> 10,000원</label><br>
+    <label><input type="radio" name="friendDiscount" value="-20000"> 20,000원</label><br>
+    <label><input type="radio" name="friendDiscount" value="-30000"> 30,000원</label><br>
+    <label><input type="radio" name="friendDiscount" value="-40000"> 40,000원</label><br>
+    <label><input type="radio" name="friendDiscount" value="-50000"> 50,000원</label><br>
+  </div>
+
+  <!-- 계산 결과 출력 -->
+  <h3>✔ 결제 금액: <span id="totalPayment">0</span>원</h3>
+  <h3>✔ 보증금 (2일 이내 환급): 50,000원</h3>
+  <h2>👉 총 금액: <span id="finalAmount">0</span>원</h2>
+
+  <!-- 버튼 -->
+  <button onclick="calculateTotal()">계산하기</button>
+  <button onclick="copyReceipt()">복사하기</button>
+
+  <!-- 영수증 내용 -->
+  <textarea id="receiptText" rows="20" cols="40" readonly></textarea>
+
+  <script>
+    const deposit = 50000;
+
+    function calculateTotal() {
+      // 선택된 값 가져오기
+      const basePrice = parseInt(document.querySelector('input[name="basePrice"]:checked')?.value || 0);
+      const extraPerson = parseInt(document.querySelector('input[name="extraPerson"]:checked')?.value || 0);
+      const nightExtension = parseInt(document.querySelector('input[name="nightExtension"]:checked')?.value || 0);
+      const reviewDiscount = parseInt(document.querySelector('input[name="reviewDiscount"]:checked')?.value || 0);
+      const friendDiscount = parseInt(document.querySelector('input[name="friendDiscount"]:checked')?.value || 0);
+
+      // 계산
+      const totalPayment = basePrice + extraPerson + nightExtension + reviewDiscount + friendDiscount;
+      const finalAmount = totalPayment + deposit;
+
+      // 결과 표시
+      document.getElementById("totalPayment").textContent = totalPayment.toLocaleString();
+      document.getElementById("finalAmount").textContent = finalAmount.toLocaleString();
+
+      // 영수증 업데이트
+      updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount);
+    }
+
+    function updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount) {
+      const dateInput = document.getElementById("useDate").value;
+      let useDate = '';
+      if (dateInput) {
+        const date = new Date(dateInput);
+        const options = { year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short' };
+        useDate = date.toLocaleDateString('ko-KR', options);
+      }
+
+      document.getElementById("receiptText").value = `
+안녕하세요? 동탄 공간 웨이브를 찾아주셔서 감사합니다.
+
+✔ 예약 상품 : 동탄 파티룸 공간 웨이브
+✔ 이용일 : ${useDate}
+
+[💌 결제 정보]
++ 기본 금액 : ${basePrice.toLocaleString()}원
++ 인원 연장 : ${extraPerson.toLocaleString()}원
++ 야간 연장 : ${nightExtension.toLocaleString()}원
+- 리뷰 약속 할인 : ${Math.abs(reviewDiscount).toLocaleString()}원
+${friendDiscount !== 0 ? `- 지인 할인 : ${Math.abs(friendDiscount).toLocaleString()}원` : ''}
+
+✔ 결제 금액 : ${totalPayment.toLocaleString()}원
+✔ 보증금 (2일 이내 환급) : 50,000원
+
+👉 총 금액 : ${finalAmount.toLocaleString()}원
+국민은행 601501-01-483138 이*희로 입금해 주세요.
+내일 정오 12시까지 입금하지 않을 시, 예약이 취소됩니다.
+
+* 현금영수증 발행이 필요하신가요?
+이용일 이후 2일 이내 현금영수증을 발행해 드립니다.
+현금영수증을 발행할 휴대폰 번호 등을 문자로 알려주세요.
+
+[🎫 적립]
+10번 방문 시, 11번째 방문에 50%를 할인해드립니다.
+적립은 예약 대표자분 1분의 이름으로만 가능합니다.
+`;
+    }
+
+    function copyReceipt() {
+      const receiptText = document.getElementById("receiptText");
+      receiptText.select();
+      document.execCommand("copy");
+      alert("영수증 내용이 복사되었습니다!");
+    }
+  </script>
+
+</body>
+</html>
