@@ -1,83 +1,200 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>동탄 파티룸 예약 영수증</title>
-  <style>
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin-top: 10px;
-    }
-    #receiptDisplay {
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-top: 20px;
-      white-space: pre-line; /* Preserves line breaks */
-      display: none; /* Initially hide the receipt */
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>동탄 공간 웨이브 예약 안내</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .tabs {
+            display: flex;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px 5px 0 0;
+            background-color: #f1f1f1;
+            margin-right: 5px;
+        }
+        .tab-content {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 0 5px 5px 5px;
+            background-color: #f9f9f9;
+        }
+        .active-tab {
+            background-color: #007BFF;
+            color: white;
+        }
+        .active-content {
+            display: block;
+        }
+        .button {
+            padding: 10px 15px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        #receipt {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            display: none;
+        }
+        #instruction {
+            display: none;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+        }
+      
+       button {
+         padding: 10px 20px;
+         font-size: 16px;
+         margin-top: 10px;
+        }
+      #receiptDisplay {
+          border: 1px solid #ccc;
+         padding: 10px;
+          margin-top: 20px;
+         white-space: pre-line; /* Preserves line breaks */
+         display: none; /* Initially hide the receipt */
+       }
+
+      
+    </style>
 </head>
+
+
 <body>
+
+<h1>동탄 공간 웨이브 예약 안내</h1>
+
+<div class="tabs">
+    <div class="tab active-tab" onclick="showTab(1)">예약 확정 시</div>
+    <div class="tab" onclick="showTab(2)">결제 정보</div>
+    <div class="tab" onclick="showTab(3)">당일 입장 안내</div>
+</div>
+  
+<div id="tab1" class="tab-content active-content">
+    <p>안녕하세요? 동탄 공간 웨이브를 찾아주셔서 감사합니다. 문자로 결제 정보를 전달드리겠습니다. 감사합니다 :)</p>
+    <button class="button" onclick="copyText('안녕하세요? 동탄 공간 웨이브를 찾아주셔서 감사합니다. 문자로 결제 정보를 전달드리겠습니다. 감사합니다 :)')">복사하기</button>
+</div>
+  
+<div id="tab2" class="tab-content">
   <h1>동탄 파티룸 공간 웨이브 예약</h1>
+  
   <h2>✔ 예약 상품 : 동탄 파티룸 공간 웨이브</h2>
   <label>이용일: <input type="date" id="useDate"></label>
-  <h2>[💌 결제 정보]</h2>
-  <div>
-    <h3>기본 금액</h3>
-    <label><input type="radio" name="basePrice" value="100000"> 100,000원</label><br>
-    <label><input type="radio" name="basePrice" value="140000"> 140,000원</label><br>
-    <label><input type="radio" name="basePrice" value="150000"> 150,000원</label><br>
-    <label><input type="radio" name="basePrice" value="160000"> 160,000원</label><br>
-    <label><input type="radio" name="basePrice" value="170000"> 170,000원</label><br>
-    <label><input type="radio" name="basePrice" value="180000"> 180,000원</label><br>
-    <label><input type="radio" name="basePrice" value="190000"> 190,000원</label><br>
-  </div>
-  <div>
-    <h3>인원 연장</h3>
-    <label><input type="radio" name="extraPerson" value="0"> 없음</label><br>
-    <label><input type="radio" name="extraPerson" value="10000"> 10,000원</label><br>
-    <label><input type="radio" name="extraPerson" value="20000"> 20,000원</label><br>
-    <label><input type="radio" name="extraPerson" value="30000"> 30,000원</label><br>
-    <label><input type="radio" name="extraPerson" value="40000"> 40,000원</label><br>
-  </div>
-  <div>
-    <h3>야간 연장</h3>
-    <label><input type="radio" name="nightExtension" value="0"> 없음</label><br>
-    <label><input type="radio" name="nightExtension" value="50000"> 50,000원</label><br>
-    <label><input type="radio" name="nightExtension" value="70000"> 70,000원</label><br>
-  </div>
-  <div>
-    <h3>리뷰 약속 할인</h3>
-    <label><input type="radio" name="reviewDiscount" value="0"> 없음</label><br>
-    <label><input type="radio" name="reviewDiscount" value="-10000"> 10,000원</label><br>
-  </div>
-  <div>
-    <h3>지인 할인</h3>
-    <label><input type="radio" name="friendDiscount" value="0"> 없음</label><br>
-    <label><input type="radio" name="friendDiscount" value="-10000"> 10,000원</label><br>
-    <label><input type="radio" name="friendDiscount" value="-20000"> 20,000원</label><br>
-    <label><input type="radio" name="friendDiscount" value="-30000"> 30,000원</label><br>
-    <label><input type="radio" name="friendDiscount" value="-40000"> 40,000원</label><br>
-    <label><input type="radio" name="friendDiscount" value="-50000"> 50,000원</label><br>
-  </div>
-  
-  <!-- 버튼 -->
-  <button onclick="calculateTotal()">계산하기</button>
-  <div>
-    <h3>✔ 결제 금액: <span id="totalPayment">0</span>원</h3>
-    <h3>✔ 보증금 (2일 이내 환급): 50,000원</h3>
-  </div>
-  <h2>👉 총 금액: <span id="finalAmount">0</span>원</h2>
-
-  <!-- 영수증 내용 -->
+      
+    <h2>[💌 결제 정보]</h2>
+    <div>
+      <h3>기본 금액</h3>
+      <label><input type="radio" name="basePrice" value="100000"> 100,000원</label><br>
+      <label><input type="radio" name="basePrice" value="120000"> 120,000원</label><br>
+      <label><input type="radio" name="basePrice" value="130000"> 130,000원</label><br>
+      <label><input type="radio" name="basePrice" value="140000"> 140,000원</label><br>
+      <label><input type="radio" name="basePrice" value="140000"> 150,000원</label><br>
+      <label><input type="radio" name="basePrice" value="160000"> 160,000원</label><br>
+      <label><input type="radio" name="basePrice" value="170000"> 170,000원</label><br>
+      <label><input type="radio" name="basePrice" value="180000"> 180,000원</label><br>
+      <label><input type="radio" name="basePrice" value="190000"> 190,000원</label><br>
+    </div>
+    <div>
+      <h3>시간 선택 필요</h3>
+      <label><input type="radio" name="timeselect" value="8"> 필요 없음</label><br>
+      <label><input type="radio" name="timeselect" value="4"> 4시간 선택 필요</label><br>
+      <label><input type="radio" name="timeselect" value="6"> 6시간 선택 필요</label><br>
+    </div>
+    <div>
+      <h3>인원 연장</h3>
+      <label><input type="radio" name="extraPerson" value="0"> 없음</label><br>
+      <label><input type="radio" name="extraPerson" value="10000"> 10,000원</label><br>
+      <label><input type="radio" name="extraPerson" value="20000"> 20,000원</label><br>
+      <label><input type="radio" name="extraPerson" value="30000"> 30,000원</label><br>
+      <label><input type="radio" name="extraPerson" value="40000"> 40,000원</label><br>
+    </div>
+    <div>
+      <h3>야간 연장</h3>
+      <label><input type="radio" name="nightExtension" value="0"> 없음</label><br>
+      <label><input type="radio" name="nightExtension" value="50000"> 50,000원</label><br>
+      <label><input type="radio" name="nightExtension" value="70000"> 70,000원</label><br>
+    </div>
+    <div>
+      <h3>리뷰 약속 할인</h3>
+      <label><input type="radio" name="reviewDiscount" value="0"> 없음</label><br>
+      <label><input type="radio" name="reviewDiscount" value="-10000"> 10,000원</label><br>
+    </div>
+    <div>
+      <h3>지인 할인</h3>
+      <label><input type="radio" name="friendDiscount" value="0"> 없음</label><br>
+      <label><input type="radio" name="friendDiscount" value="-10000"> 10,000원</label><br>
+      <label><input type="radio" name="friendDiscount" value="-20000"> 20,000원</label><br>
+      <label><input type="radio" name="friendDiscount" value="-30000"> 30,000원</label><br>
+      <label><input type="radio" name="friendDiscount" value="-40000"> 40,000원</label><br>
+      <label><input type="radio" name="friendDiscount" value="-50000"> 50,000원</label><br>
+    </div>
+    <button onclick="calculateTotal()">계산하기</button>
+    <div>
+      <h3>✔ 결제 금액: <span id="totalPayment">0</span>원</h3>
+      <h3>✔ 보증금 (2일 이내 환급): 50,000원</h3>
+    </div>
+    <h2>👉 총 금액: <span id="finalAmount">0</span>원</h2>
+      
+        <!-- 영수증 내용 -->
   <div id="receiptDisplay"></div>
   
   <button onclick="copyReceipt()">복사하기</button>
+      
+  </div>
+      
+  <div id="tab3" class="tab-content">
+    <h2>당일 입장 안내</h2>
+    <label for="password">현관 비밀번호 입력:</label>
+    <input type="text" id="password" maxlength="5" oninput="formatPassword()">
+    <br>
+    <button class="button" onclick="showPassword()">입력</button>
+    <div id="result"></div>
+    <br>
+    <button class="button" onclick="copyInfo()">복사하기</button>
+  </div>  
+  
+  
   
   <script>
-    const deposit = 50000;
+    function showTab(tabIndex) {
+        // 모든 탭 내용 숨기기
+        document.querySelectorAll('.tab-content').forEach((tabContent, index) => {
+            tabContent.style.display = (index + 1 === tabIndex) ? 'block' : 'none';
+        });
+        document.querySelectorAll('.tab').forEach((tab, index) => {
+            tab.classList.toggle('active-tab', index + 1 === tabIndex);
+        });
+    }
+
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('내용이 복사되었습니다!');
+        });
+    }
+    
+  
+   const deposit = 50000;
 
     function calculateTotal() {
       const basePrice = parseInt(document.querySelector('input[name="basePrice"]:checked')?.value || 0);
@@ -85,6 +202,7 @@
       const nightExtension = parseInt(document.querySelector('input[name="nightExtension"]:checked')?.value || 0);
       const reviewDiscount = parseInt(document.querySelector('input[name="reviewDiscount"]:checked')?.value || 0);
       const friendDiscount = parseInt(document.querySelector('input[name="friendDiscount"]:checked')?.value || 0);
+      const timeselect = parseInt(document.querySelector('input[name="timeselect"]:checked')?.value || 0);
       
       const totalPayment = basePrice + extraPerson + nightExtension + reviewDiscount + friendDiscount;
       const finalAmount = totalPayment + deposit;
@@ -92,10 +210,10 @@
       document.getElementById("totalPayment").textContent = totalPayment.toLocaleString();
       document.getElementById("finalAmount").textContent = finalAmount.toLocaleString();
       
-      updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount);
+      updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount, timeselect);
     }
 
-    function updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount) {
+    function updateReceipt(basePrice, extraPerson, nightExtension, reviewDiscount, friendDiscount, totalPayment, finalAmount, timeselect) {
       const dateInput = document.getElementById("useDate").value;
       let useDate = '';
       if (dateInput) {
@@ -112,7 +230,8 @@
       receiptText += `+ 인원 연장 : ${extraPerson.toLocaleString()}원\n`;
       receiptText += `+ 야간 연장 : ${nightExtension.toLocaleString()}원\n`;
       receiptText += `- 리뷰 약속 할인 : ${Math.abs(reviewDiscount).toLocaleString()}원\n`;
-      if (friendDiscount !== 0) {
+
+	  if(friendDiscount !== 0) {
         receiptText += `- 지인 할인 : ${Math.abs(friendDiscount).toLocaleString()}원\n`;
       }
       receiptText += `\n✔ 결제 금액 : ${totalPayment.toLocaleString()}원\n`;
@@ -123,6 +242,15 @@
       receiptText += `* 현금영수증 발행이 필요하신가요?\n`;
       receiptText += `이용일 이후 2일 이내 현금영수증을 발행해 드립니다.\n`;
       receiptText += `현금영수증을 발행할 휴대폰 번호 등을 문자로 알려주세요.\n\n`;
+
+    if(timeselect == 4) {
+        receiptText += `[⌚4시간 선택]\n 이용하실 시간을 문자로 알려주세요. 22시 이전에 사용 가능합니다.\n\n`
+    }
+
+    if(timeselect == 6) {
+        receiptText += `[⌚6시간 선택]\n 이용하실 시간을 문자로 알려주세요. 22시 이전에 사용 가능합니다.\n\n`
+    }
+
       receiptText += `[🎫 적립]\n`;
       receiptText += `10번 방문 시, 11번째 방문에 50%를 할인해드립니다.\n`;
       receiptText += `적립은 예약 대표자분 1분의 이름으로만 가능합니다.`;
@@ -136,7 +264,44 @@
       navigator.clipboard.writeText(receiptText).then(() => {
         alert("영수증이 클립보드에 복사되었습니다!");
       });
-    }
+}
+
+function formatPassword() {
+    const password = document.getElementById("password").value;
+    document.getElementById("password").value = password.replace(/\D/g, '') + '*';
+}
+
+function showPassword() {
+    const password = document.getElementById("password").value;
+    const formattedPassword = password.replace(/\D/g, '') + '*';
+    document.getElementById("result").innerText = `
+        안녕하세요! 동탄파티룸 공간웨이브입니다.
+        오늘 예약하신 동탄파티룸 입장 정보 전달드립니다. 
+
+        ✅ 상세 주소 : 동탄디웨이브 1001호
+        ✅ 현관 비밀번호 : ${formattedPassword}
+
+        - 책상 위에 올려둔 공간웨이브 사용가이드를 확인해 주세요.
+        - 퇴실 시 정리정돈 및 설거지 부탁드립니다.
+        - 음식물 쓰레기통은 싱크대 밑에 있습니다.
+        - 일반쓰레기와 재활용쓰레기는 베란다에 분리배출해 주세요.
+        - 주차는 B1층, 1층, 2층 3개 층에 주차 등록 없이 가능합니다.
+
+        즐거운 시간 되세요!💕
+    `;
+}
+
+function copyInfo() {
+    const info = document.getElementById("result").innerText;
+    navigator.clipboard.writeText(info).then(() => {
+        alert("입장 안내 내용이 복사되었습니다.");
+    });
+}
+
   </script>
-</body>
-</html>
+  </div>
+  </body>
+  </html>
+ 
+      
+      
